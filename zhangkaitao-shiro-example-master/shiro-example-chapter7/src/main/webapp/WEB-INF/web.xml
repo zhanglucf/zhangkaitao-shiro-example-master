@@ -41,13 +41,24 @@
     <!--</filter-mapping>-->
 
 
+<!--
+    在容器启动时创建 WebEnvironment 对象，并由该对象来读取 Shiro 配置文件，
+    创建WebSecurityManager 与 FilterChainResolver 对象，它们都在后面将要出现的 ShiroFilter 中起到了重要作用。
+
+    从 web.xml 中同样可以得知，ShiroFilter 是整个 Shiro 框架的门面，
+    因为它拦截了所有的请求，后面是需要 Authentication（认证）还是需要 Authorization（授权）都由它说了算。
+
+    原文链接：https://blog.csdn.net/huangbaokang/article/details/77575331
+-->
+
     <!--- shiro 1.2 -->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
     <context-param>
         <param-name>shiroEnvironmentClass</param-name>
-        <param-value>org.apache.shiro.web.env.IniWebEnvironment</param-value><!-- 默认先从/WEB-INF/shiro.ini，如果没有找classpath:shiro.ini -->
+        <!-- 默认先从/WEB-INF/shiro.ini，如果没有找到，接着从classpath:shiro.ini -->
+        <param-value>org.apache.shiro.web.env.IniWebEnvironment</param-value>
     </context-param>
     <context-param>
         <param-name>shiroConfigLocations</param-name>
